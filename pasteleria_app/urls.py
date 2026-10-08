@@ -24,4 +24,9 @@ urlpatterns = [
     # Esta vista se encarga de la consulta y muestra de los productos almacenados dentro de la base de datos 'MySQL' / 'MariaDB'.
     #
     path('productos/', views.listar_productos, name='listar_productos'),
+    # CREAR_PRODUCTO
+    # Ruta asociada a la funcion 'crear_producto' definida en 'views.py'.
+    # Esta vista se encarga de permitir acceder a un formulario para poder registrar nuevos productos.
+    #
+    path('productos/crear/', views.crear_producto, name='crear_producto'),
 ]

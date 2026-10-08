@@ -63,10 +63,22 @@
 
         <h1>Productos de la Pasteleria</h1>
 
-        <!-- NAVEGACION -->
-        <div class="acciones">
-            <a href="{% url 'pasteleria_app:inicio' %}" class="boton">Volver al Inicio</a>
-        </div>
+    <!-- NAVEGACION -->
+    <div class="acciones">
+
+        <!-- INICIO -->
+        <!-- Permite regresar a la pagina principal. -->
+        <a href="{% url 'pasteleria_app:inicio' %}" class="boton">
+            Volver al Inicio
+        </a>
+
+        <!-- CREAR_PRODUCTO -->
+        <!-- Permite acceder al formulario de creacion de productos. -->
+        <a href="{% url 'pasteleria_app:crear_producto' %}" class="boton">
+            Crear Nuevo Producto
+        </a>
+
+    </div>
 
         <!-- LISTADO DE PRODUCTOS -->
         <!-- Recorre los productos enviados desde 'views.py'. -->
