@@ -96,6 +96,15 @@
         </section>
 
         <!-- NAVEGACION -->
+        <!-- Permite acceder a las funciones relacionadas con el producto. -->
+
+        <!-- EDITAR_PRODUCTO -->
+        <!-- Permite acceder al formulario de edicion del producto actual. -->
+        <a href="{% url 'pasteleria_app:editar_producto' producto.id %}" class="boton">
+            Editar Producto
+        </a>
+
+        <!-- LISTAR_PRODUCTOS -->
         <!-- Permite regresar al listado de productos. -->
         <a href="{% url 'pasteleria_app:listar_productos' %}" class="boton">
             Volver al Listado de Productos

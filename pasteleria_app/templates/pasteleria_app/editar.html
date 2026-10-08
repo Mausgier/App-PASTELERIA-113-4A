@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pasteleria - Editar Producto</title>
+
+    <!-- ESTILOS -->
+    <!-- Define la apariencia del formulario de edicion. -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .contenedor {
+            width: 80%;
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .acciones {
+            margin-top: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="contenedor">
+
+        <h1>Editar Producto</h1>
+
+        <!-- PRODUCTO -->
+        <!-- Identifica el producto que se desea modificar. -->
+        <h2>{{ producto.nombre }}</h2>
+
+        <!-- FORMULARIO -->
+        <!-- Envia los datos modificados mediante el metodo POST. -->
+        <form method="POST">
+
+            <!-- CSRF_TOKEN -->
+            <!-- Protege el formulario contra solicitudes CSRF. -->
+            {% csrf_token %}
+
+            <!-- PRODUCTOFORM -->
+            <!-- Muestra el formulario con los datos actuales del producto. -->
+            {{ formulario.as_p }}
+
+            <!-- GUARDAR -->
+            <!-- Envia las modificaciones para su validacion y guardado. -->
+            <button type="submit">
+                Guardar Cambios
+            </button>
+
+        </form>
+
+        <!-- NAVEGACION -->
+        <!-- Permite regresar al detalle del producto. -->
+        <div class="acciones">
+            <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}">
+                Volver al Detalle del Producto
+            </a>
+        </div>
+
+    </main>
+
+</body>
+
+</html>
