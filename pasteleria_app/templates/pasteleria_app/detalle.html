@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pasteleria - Detalle de Producto</title>
+
+    <!-- ESTILOS -->
+    <!-- Define la apariencia de la pagina de detalle. -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .contenedor {
+            width: 80%;
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .informacion {
+            margin-top: 30px;
+        }
+
+        .informacion p {
+            font-size: 18px;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="contenedor">
+
+        <h1>Detalle de Producto</h1>
+
+        <!-- INFORMACION -->
+        <!-- Muestra los datos del producto recibido desde views.py. -->
+        <section class="informacion">
+
+            <p>
+                <strong>ID:</strong>
+                {{ producto.id }}
+            </p>
+
+            <p>
+                <strong>Nombre:</strong>
+                {{ producto.nombre }}
+            </p>
+
+            <p>
+                <strong>Descripcion:</strong>
+                {{ producto.descripcion|default:"Sin descripcion" }}
+            </p>
+
+            <p>
+                <strong>Categoria:</strong>
+                {{ producto.get_categoria_display }}
+            </p>
+
+            <p>
+                <strong>Precio:</strong>
+                ${{ producto.precio }}
+            </p>
+
+            <p>
+                <strong>Stock:</strong>
+                {{ producto.stock }}
+            </p>
+
+        </section>
+
+        <!-- NAVEGACION -->
+        <!-- Permite regresar al listado de productos. -->
+        <a href="{% url 'pasteleria_app:listar_productos' %}" class="boton">
+            Volver al Listado de Productos
+        </a>
+
+    </main>
+
+</body>
+
+</html>

@@ -108,6 +108,12 @@
                     {{ producto.stock }}
                 </p>
 
+                <!-- DETALLE_PRODUCTO -->
+                <!-- Permite consultar individualmente la informacion del producto. -->
+                <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}" class="boton">
+                    Ver Detalle
+                </a>
+
             </article>
 
         {% empty %}

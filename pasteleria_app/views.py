@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto
 from .forms import ProductoForm
 
@@ -83,3 +83,25 @@ def crear_producto(request):
     # https://docs.djangoproject.com/en/5.0/topics/http/shortcuts/#optional-arguments
     #
     return render(request, 'pasteleria_app/crear.html', {'formulario': formulario})
+
+
+# DETALLE_PRODUCTO
+# Vista encargada de consultar y mostrar la informacion de un producto especifico mediante su identificador 'id'.
+# https://docs.djangoproject.com/en/5.0/topics/http/shortcuts/#required-arguments
+#
+def detalle_producto(request, id):
+
+    # GET_OBJECT_OR_404
+    # Busca un producto cuyo identificador coincida con el 'id' recibido desde la 'URL', y si es que el producto no existe, 'Django' devuelve una respuesta 'HTTP' '404'.
+    # https://docs.djangoproject.com/en/5.0/topics/http/shortcuts/#get-object-or-404
+    #
+    producto = get_object_or_404(Producto, id=id)
+
+    # RENDER
+    # Permite generar una respuesta 'HTML' utilizando como minimo, el 'request' y 'template_name' entregados.
+    # https://docs.djangoproject.com/en/5.0/topics/http/shortcuts/#render
+    #
+    # El argumento opcional 'context' actuara como un diccionario, el cual, nos permitira aacceder al producto desde el 'HTML' utilizando el nombre 'producto'.
+    # https://docs.djangoproject.com/en/5.0/topics/http/shortcuts/#optional-arguments
+    #
+    return render(request, 'pasteleria_app/detalle.html', {'producto': producto})
