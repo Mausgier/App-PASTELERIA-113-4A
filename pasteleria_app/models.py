@@ -13,7 +13,7 @@ class Producto(models.Model):
     #
     # 'CharField' corresponde a un campo diseñado para almacenar texto de manera limitada.
     # https://docs.djangoproject.com/en/5.0/ref/models/fields/#charfield
-    # 
+    #
     # 'max_length=100' establece que este campo puede poseer hasta un maximo de '100' caracteres.
     # https://docs.djangoproject.com/en/5.0/ref/models/fields/#django.db.models.CharField.max_length
     #
@@ -76,7 +76,7 @@ class Producto(models.Model):
     # https://docs.djangoproject.com/en/5.0/ref/models/fields/#django.db.models.DecimalField.decimal_places
     #
     # 'validators' se encarga de realizar todas las validaciones que se especifiquen dentro de su campo.
-    # https://docs.djangoproject.com/en/5.0/ref/models/fields/#validators 
+    # https://docs.djangoproject.com/en/5.0/ref/models/fields/#validators
     #
     # '[MinValueValidator(1)]' es un metodo de validacion, el cual, en nuestro caso, comprobara que cualquier valor que se ingrese sea mayor o igual a '1'.
     # https://docs.djangoproject.com/en/5.0/ref/validators/#minvaluevalidator
