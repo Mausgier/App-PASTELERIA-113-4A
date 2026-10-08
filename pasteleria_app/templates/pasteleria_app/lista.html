@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pasteleria - Productos</title>
+
+    <!-- ESTILOS -->
+    <!-- Define la apariencia del listado de productos. -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .contenedor {
+            width: 80%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .acciones {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .producto {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .producto h2 {
+            margin-top: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="contenedor">
+
+        <h1>Productos de la Pasteleria</h1>
+
+        <!-- NAVEGACION -->
+        <div class="acciones">
+            <a href="{% url 'pasteleria_app:inicio' %}" class="boton">Volver al Inicio</a>
+        </div>
+
+        <!-- LISTADO DE PRODUCTOS -->
+        <!-- Recorre los productos enviados desde 'views.py'. -->
+        {% for producto in productos %}
+
+            <article class="producto">
+
+                <h2>{{ producto.nombre }}</h2>
+
+                <p>
+                    <strong>Descripcion:</strong>
+                    {{ producto.descripcion|default:"Sin descripcion" }}
+                </p>
+
+                <p>
+                    <strong>Categoria:</strong>
+                    {{ producto.get_categoria_display }}
+                </p>
+
+                <p>
+                    <strong>Precio:</strong>
+                    ${{ producto.precio }}
+                </p>
+
+                <p>
+                    <strong>Stock:</strong>
+                    {{ producto.stock }}
+                </p>
+
+            </article>
+
+        {% empty %}
+
+            <!-- MENSAJE SIN REGISTROS -->
+            <div class="producto">
+                <p>No existen productos registrados.</p>
+            </div>
+
+        {% endfor %}
+    </main>
+
+</body>
+
+</html>

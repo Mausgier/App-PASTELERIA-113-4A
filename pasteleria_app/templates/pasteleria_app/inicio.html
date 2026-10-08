@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pasteleria - Inicio</title>
+
+</head>
+
+<body>
+
+    <!-- ENCABEZADO -->
+    <!-- Identifica la tematica principal de la aplicacion. -->
+    <header>
+        <h1>Pasteleria</h1>
+        <p>Sistema de Gestion de Productos</p>
+    </header>
+
+    <!-- NAVEGACION -->
+    <!-- Permite acceder a las diferentes paginas de la aplicacion. -->
+    <nav>
+        <!-- INICIO -->
+        <!-- Enlace a la pagina principal. -->
+        <a href="{% url 'pasteleria_app:inicio' %}">Inicio</a>
+
+        <!-- LISTAR_PRODUCTOS -->
+        <!-- Enlace al listado de productos almacenados en 'MySQL' / 'MariaDB'. -->
+        <a href="{% url 'pasteleria_app:listar_productos' %}">Ver Productos</a>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <h2>Bienvenido a nuestra Pasteleria</h2>
+        <p>Esta aplicacion permite gestionar los productos disponibles en nuestra pasteleria.</p>
+    </main>
+
+</body>
+
+</html>
