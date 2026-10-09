@@ -6,11 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Pasteleria - Productos</title>
+    <title>Pastelería - Productos</title>
 
-    <!-- ESTILOS -->
-    <!-- Define la apariencia del listado de productos. -->
+    <!--
+        "ESTILOS"
+        Define la apariencia de la pagina responsable de mostrar el listado de productos.
+    -->
     <style>
+
+        /*
+            "BODY"
+            Establece la fuente, el color de fondo y elimina los margenes predeterminados.
+        */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -18,30 +25,61 @@
             padding: 0;
         }
 
+        /*
+            ".CONTENEDOR"
+            Define el ancho del contenido principal y lo centra horizontalmente.
+            'max-width' limita su tamaño maximo para evitar que ocupe demasiado espacio.
+        */
         .contenedor {
             width: 80%;
             max-width: 1000px;
             margin: 40px auto;
         }
 
+        /*
+            "H1"
+            Centra el titulo principal de la pagina.
+        */
         h1 {
             text-align: center;
         }
 
+        /*
+            ".ACCIONES"
+            Centra los enlaces de navegacion y establece espacio debajo de ellos.
+        */
         .acciones {
             text-align: center;
             margin-bottom: 30px;
         }
 
+        /*
+            ".BOTON"
+            Presenta los enlaces de navegacion y consulta como botones.
+            Define sus dimensiones, colores y bordes redondeados.
+        */
         .boton {
             display: inline-block;
             padding: 10px 15px;
-            background-color: #333;
+            background-color: #333333;
             color: white;
             text-decoration: none;
             border-radius: 5px;
         }
 
+        /*
+            ".BOTON:HOVER"
+            Cambia el color de los botones cuando el cursor se posiciona sobre ellos.
+        */
+        .boton:hover {
+            background-color: #555555;
+        }
+
+        /*
+            ".PRODUCTO"
+            Presenta la informacion de cada producto dentro de una tarjeta blanca.
+            Establece espacios internos, separacion entre tarjetas y bordes redondeados.
+        */
         .producto {
             background-color: white;
             padding: 20px;
@@ -49,81 +87,136 @@
             border-radius: 8px;
         }
 
+        /*
+            ".PRODUCTO H2"
+            Elimina el margen superior del nombre del producto dentro de su tarjeta.
+        */
         .producto h2 {
             margin-top: 0;
         }
+
     </style>
 
 </head>
 
 <body>
 
-    <!-- CONTENEDOR PRINCIPAL -->
+    <!--
+        "CONTENEDOR PRINCIPAL"
+    -->
     <main class="contenedor">
 
-        <h1>Productos de la Pasteleria</h1>
+        <!--
+            "TITULO"
+        -->
+        <h1>Productos de la Pastelería</h1>
 
-    <!-- NAVEGACION -->
-    <div class="acciones">
+        <!--
+            "NAVEGACION"
+        -->
+        <div class="acciones">
 
-        <!-- INICIO -->
-        <!-- Permite regresar a la pagina principal. -->
-        <a href="{% url 'pasteleria_app:inicio' %}" class="boton">
-            Volver al Inicio
-        </a>
+            <!--
+                "INICIO"
+                Permite regresar a la pagina principal.
+                https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
+            -->
+            <a href="{% url 'pasteleria_app:inicio' %}" class="boton">Volver al Inicio</a>
 
-        <!-- CREAR_PRODUCTO -->
-        <!-- Permite acceder al formulario de creacion de productos. -->
-        <a href="{% url 'pasteleria_app:crear_producto' %}" class="boton">
-            Crear Nuevo Producto
-        </a>
+            <!--
+                "CREAR_PRODUCTO"
+                Permite acceder al formulario de creacion de productos.
+                https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
+            -->
+            <a href="{% url 'pasteleria_app:crear_producto' %}" class="boton">Crear Nuevo Producto</a>
 
-    </div>
+        </div>
 
-        <!-- LISTADO DE PRODUCTOS -->
-        <!-- Recorre los productos enviados desde 'views.py'. -->
+        <!--
+            "LISTADO DE PRODUCTOS"
+            Recorre los productos enviados desde 'views.py'.
+            https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#for
+        -->
         {% for producto in productos %}
 
+            <!--
+                "PRODUCTOS"
+            -->
             <article class="producto">
 
+                <!--
+                    "NOMBRE"
+                    Muestra el nombre del producto.
+                -->
                 <h2>{{ producto.nombre }}</h2>
 
+                <!--
+                    "DESCRIPCION"
+                    Muestra la descripcion que acompaña al producto.
+
+                    Si el producto no posee una descripcion, se mostrara el texto alternativo proporcionado por el filtro 'default'.
+                    https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#default
+                -->
                 <p>
-                    <strong>Descripcion:</strong>
-                    {{ producto.descripcion|default:"Sin descripcion" }}
+                    <strong>Descripción:</strong>
+                    {{ producto.descripcion|default:"Sin descripción." }}
                 </p>
 
+                <!--
+                    "CATEGORIA"
+                    Muestra la categoria asignada al producto.
+
+                    Se asegura de mostrar el nombre legible de cada categoria.
+                    https://docs.djangoproject.com/en/5.0/ref/models/instances/#django.db.models.Model.get_FOO_display
+                -->
                 <p>
-                    <strong>Categoria:</strong>
+                    <strong>Categoría:</strong>
                     {{ producto.get_categoria_display }}
                 </p>
 
+                <!--
+                    "PRECIO"
+                    Muestra el precio del producto.
+                -->
                 <p>
                     <strong>Precio:</strong>
                     ${{ producto.precio }}
                 </p>
 
+                <!--
+                    "STOCK"
+                    Muestra el stock disponible del producto.
+                -->
                 <p>
                     <strong>Stock:</strong>
                     {{ producto.stock }}
                 </p>
 
-                <!-- DETALLE_PRODUCTO -->
-                <!-- Permite consultar individualmente la informacion del producto. -->
-                <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}" class="boton">
-                    Ver Detalle
-                </a>
+                <!--
+                    "DETALLE_PRODUCTO"
+                    Permite consultar individualmente la informacion del producto.
+                    https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
+                -->
+                <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}" class="boton">Ver Detalle</a>
 
             </article>
 
-        {% empty %}
+            <!--
+                "EMPTY"
+                En el caso de que no existan productos, mostrar el siguiente bloque de texto.
+                https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#for-empty
+            -->
+            {% empty %}
 
-            <!-- MENSAJE SIN REGISTROS -->
+            <!--
+                "MENSAJE SIN REGISTROS"
+            -->
             <div class="producto">
                 <p>No existen productos registrados.</p>
             </div>
 
         {% endfor %}
+
     </main>
 
 </body>

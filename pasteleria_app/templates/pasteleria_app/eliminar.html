@@ -6,12 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Pasteleria - Eliminar Producto</title>
+    <title>Pastelería - Eliminar Producto</title>
 
-    <!-- ESTILOS -->
-    <!-- Define la apariencia de la pagina de confirmacion de eliminacion. -->
+    <!--
+        "ESTILOS"
+        Define la apariencia de la pagina responsable de solicitar la confirmacion antes de eliminar un producto.
+    -->
     <style>
 
+        /*
+            "BODY"
+            Establece la fuente, el color de fondo y elimina los margenes predeterminados.
+        */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -19,24 +25,45 @@
             padding: 0;
         }
 
+        /*
+            ".CONTENEDOR"
+            Presenta la confirmacion de eliminacion dentro de un contenedor blanco y centrado.
+            Define su ancho, espacios internos y bordes redondeados.
+            'max-width' limita su tamaño maximo.
+            'box-sizing: border-box' permite incluir los espacios internos y los bordes dentro del ancho definido para el contenedor.
+        */
         .contenedor {
             width: 80%;
             max-width: 600px;
             margin: 40px auto;
             background-color: white;
             padding: 30px;
+            box-sizing: border-box;
             border-radius: 8px;
         }
 
+        /*
+            "H1"
+            Centra el titulo principal de la pagina.
+        */
         h1 {
             text-align: center;
         }
 
+        /*
+            ".ADVERTENCIA"
+            Destaca el mensaje de confirmacion mediante un color rojo y un mayor grosor de la fuente.
+        */
         .advertencia {
             color: #a32929;
             font-weight: bold;
         }
 
+        /*
+            ".PRODUCTO"
+            Presenta la informacion del producto que se desea eliminar.
+            Define el color de fondo, los espacios y los bordes redondeados.
+        */
         .producto {
             background-color: #f4f4f4;
             padding: 15px;
@@ -44,7 +71,17 @@
             margin: 20px 0;
         }
 
+        /*
+            "BUTTON"
+            Define la apariencia del boton encargado de confirmar la eliminacion.
+            Utiliza un color rojo para diferenciar una accion destructiva.
+            'font-family: inherit' utiliza la fuente definida en el elemento padre.
+            'font-size' establece un tamaño de letra uniforme con los enlaces de navegacion.
+            'cursor: pointer' indica visualmente que el boton puede presionarse.
+        */
         button {
+            font-family: inherit;
+            font-size: 16px;
             padding: 10px 15px;
             background-color: #a32929;
             color: white;
@@ -53,13 +90,43 @@
             cursor: pointer;
         }
 
+        /*
+            "BUTTON:HOVER"
+            Cambia el color del boton de confirmacion a un rojo mas oscuro cuando el cursor se posiciona sobre el.
+            Mantiene la diferenciacion visual de la accion destructiva.
+        */
+        button:hover {
+            background-color: #821f1f;
+        }
+
+        /*
+            ".ACCIONES"
+            Establece un espacio superior para separar la navegacion del formulario de confirmacion.
+        */
         .acciones {
             margin-top: 20px;
         }
 
+        /*
+            ".CANCELAR"
+            Presenta el enlace encargado de cancelar la eliminacion con la misma apariencia de los botones de navegacion.
+            Utiliza un color oscuro para diferenciar la cancelacion de la accion destructiva representada por el boton rojo.
+        */
         .cancelar {
             display: inline-block;
-            margin-left: 15px;
+            padding: 10px 15px;
+            background-color: #333333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        /*
+            ".CANCELAR:HOVER"
+            Cambia el color del enlace de cancelacion cuando el cursor se posiciona sobre el.
+        */
+        .cancelar:hover {
+            background-color: #555555;
         }
 
     </style>
@@ -68,36 +135,59 @@
 
 <body>
 
-    <!-- CONTENEDOR PRINCIPAL -->
+    <!--
+        "CONTENEDOR PRINCIPAL"
+    -->
     <main class="contenedor">
 
+        <!--
+            "TITULO"
+        -->
         <h1>Eliminar Producto</h1>
 
-        <!-- ADVERTENCIA -->
-        <!-- Informa al usuario que esta por eliminar un producto. -->
-        <p class="advertencia">
-            ¿Estas seguro de que deseas eliminar este producto?
-        </p>
+        <!--
+            "ADVERTENCIA"
+            Informa al usuario que esta por eliminar un producto.
+        -->
+        <p class="advertencia">¿Estás seguro de que deseas eliminar este producto?</p>
 
-        <!-- PRODUCTO -->
-        <!-- Muestra la informacion del producto recibido desde views.py. -->
+        <!--
+            "PRODUCTO"
+            Muestra la informacion del producto recibido desde 'views.py'.
+        -->
         <section class="producto">
 
+            <!--
+                "ID"
+                Muestra el identificador del producto.
+            -->
             <p>
                 <strong>ID:</strong>
                 {{ producto.id }}
             </p>
 
+            <!--
+                "NOMBRE"
+                Muestra el nombre del producto.
+            -->
             <p>
                 <strong>Nombre:</strong>
                 {{ producto.nombre }}
             </p>
 
+            <!--
+                "PRECIO"
+                Muestra el precio del producto.
+            -->
             <p>
                 <strong>Precio:</strong>
                 ${{ producto.precio }}
             </p>
 
+            <!--
+                "STOCK"
+                Muestra el stock disponible del producto.
+            -->
             <p>
                 <strong>Stock:</strong>
                 {{ producto.stock }}
@@ -105,30 +195,39 @@
 
         </section>
 
-        <!-- FORMULARIO -->
-        <!-- Envia una solicitud POST para confirmar la eliminacion. -->
+        <!--
+            "FORMULARIO"
+            Envia una solicitud POST para confirmar la eliminacion.
+            https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
+        -->
         <form method="POST" action="{% url 'pasteleria_app:eliminar_producto' producto.id %}">
 
-            <!-- CSRF_TOKEN -->
-            <!-- Protege el formulario contra solicitudes CSRF. -->
-            <!-- https://docs.djangoproject.com/en/5.0/howto/csrf/ -->
+            <!--
+                "CSRF_TOKEN"
+                Protege el formulario contra solicitudes 'CSRF'.
+                https://docs.djangoproject.com/en/5.0/howto/csrf/#how-to-use-django-s-csrf-protection
+            -->
             {% csrf_token %}
 
-            <!-- CONFIRMAR_ELIMINACION -->
-            <!-- Envia el formulario para ejecutar la eliminacion. -->
-            <button type="submit">
-                Confirmar Eliminacion
-            </button>
+            <!--
+                "CONFIRMAR_ELIMINACION"
+                Envia el formulario para ejecutar la eliminacion.
+            -->
+            <button type="submit">Confirmar Eliminación</button>
 
         </form>
 
-        <!-- NAVEGACION -->
-        <!-- Permite cancelar la operacion sin eliminar el producto. -->
+        <!--
+            "NAVEGACION"
+        -->
         <div class="acciones">
 
-            <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}" class="cancelar">
-                Cancelar y Volver al Detalle
-            </a>
+            <!--
+                "DETALLE_PRODUCTO"
+                Permite regresar a los detalles del producto.
+                https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
+            -->
+            <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}" class="cancelar">Cancelar y Volver al Detalle</a>
 
         </div>
 

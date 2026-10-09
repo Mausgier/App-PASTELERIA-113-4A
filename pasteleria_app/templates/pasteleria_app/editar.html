@@ -6,11 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Pasteleria - Editar Producto</title>
+    <title>Pastelería - Editar Producto</title>
 
-    <!-- ESTILOS -->
-    <!-- Define la apariencia del formulario de edicion. -->
+    <!--
+        "ESTILOS"
+        Define la apariencia de la pagina responsable de permitir la edicion de productos.
+    -->
     <style>
+
+        /*
+            "BODY"
+            Establece la fuente, el color de fondo y elimina los margenes predeterminados.
+        */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -18,72 +25,201 @@
             padding: 0;
         }
 
+        /*
+            ".CONTENEDOR"
+            Presenta el formulario dentro de un contenedor blanco y centrado.
+            Define su ancho, espacios internos y bordes redondeados.
+            'max-width' limita su tamaño maximo.
+            'box-sizing: border-box' permite incluir los espacios internos y los bordes dentro del ancho definido para el contenedor.
+        */
         .contenedor {
             width: 80%;
             max-width: 600px;
             margin: 40px auto;
             background-color: white;
             padding: 30px;
+            box-sizing: border-box;
             border-radius: 8px;
         }
 
+        /*
+            "H1"
+            Centra el titulo principal de la pagina.
+        */
         h1 {
             text-align: center;
         }
 
+        /*
+            "BUTTON"
+            Define la apariencia del boton encargado de enviar el formulario.
+            Establece sus dimensiones, colores y bordes redondeados.
+            'font-family: inherit' utiliza la fuente definida en el elemento padre.
+            'font-size' establece un tamaño de letra uniforme con los enlaces de navegacion.
+            'cursor: pointer' indica visualmente que el boton puede presionarse.
+        */
         button {
+            font-family: inherit;
+            font-size: 16px;
             padding: 10px 15px;
-            background-color: #333;
+            background-color: #333333;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
+        /*
+            ".ACCIONES"
+            Establece un espacio superior para separar la navegacion del formulario de edicion.
+        */
         .acciones {
             margin-top: 20px;
         }
+
+        /*
+            "FORM P"
+            Organiza cada campo del formulario de manera vertical.
+            Establece una separacion uniforme entre los campos.
+        */
+        form p {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        /*
+            "FORM LABEL"
+            Presenta las etiquetas encima de sus respectivos campos.
+            Destaca visualmente el nombre de cada campo.
+        */
+        form label {
+            display: block;
+            font-weight: bold;
+        }
+
+        /*
+            "FORM INPUT, FORM SELECT, FORM TEXTAREA"
+            Establece un ancho uniforme para los campos del formulario.
+            Define espacios internos y bordes para mejorar su apariencia.
+        */
+        form input:not([type="hidden"]),
+        form select,
+        form textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #222222;
+            color-scheme: light;
+        }
+
+        /*
+            "FORM TEXTAREA"
+            Define una altura inicial para el campo de descripcion.
+            Permite modificar verticalmente su tamaño.
+        */
+        form textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        /*
+            "BUTTON:HOVER"
+            Cambia el color del boton cuando el cursor se posiciona sobre el.
+        */
+        button:hover {
+            background-color: #555555;
+        }
+
+        /*
+            ".ACCIONES A"
+            Presenta el enlace de regreso con la apariencia de los botones utilizados en las demas paginas.
+        */
+        .acciones a {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #333333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        /*
+            ".ACCIONES A:HOVER"
+            Cambia el color del enlace cuando el cursor se posiciona sobre el.
+        */
+        .acciones a:hover {
+            background-color: #555555;
+        }
+
     </style>
 
 </head>
 
 <body>
 
-    <!-- CONTENEDOR PRINCIPAL -->
+    <!--
+        "CONTENEDOR PRINCIPAL"
+    -->
     <main class="contenedor">
 
+        <!--
+            "TITULO"
+        -->
         <h1>Editar Producto</h1>
 
-        <!-- PRODUCTO -->
-        <!-- Identifica el producto que se desea modificar. -->
+        <!--
+            "PRODUCTO"
+            Identifica el producto que se desea modificar.
+        -->
         <h2>{{ producto.nombre }}</h2>
 
-        <!-- FORMULARIO -->
-        <!-- Envia los datos modificados mediante el metodo POST. -->
+        <!--
+            "FORMULARIO"
+            Envia los datos modificados mediante el metodo POST.
+        -->
         <form method="POST">
 
-            <!-- CSRF_TOKEN -->
-            <!-- Protege el formulario contra solicitudes CSRF. -->
+            <!--
+                "CSRF_TOKEN"
+                Protege el formulario contra solicitudes CSRF.
+                https://docs.djangoproject.com/en/5.0/howto/csrf/#how-to-use-django-s-csrf-protection
+            -->
             {% csrf_token %}
 
-            <!-- PRODUCTOFORM -->
-            <!-- Muestra el formulario con los datos actuales del producto. -->
+            <!--
+                "PRODUCTOFORM"
+                Muestra el formulario con los datos actuales del producto.
+                https://docs.djangoproject.com/en/5.0/ref/forms/api/#django.forms.Form.as_p
+            -->
             {{ formulario.as_p }}
 
-            <!-- GUARDAR -->
-            <!-- Envia las modificaciones para su validacion y guardado. -->
-            <button type="submit">
-                Guardar Cambios
-            </button>
+            <!--
+                "GUARDAR"
+                Envia las modificaciones para su validacion y guardado.
+            -->
+            <button type="submit">Guardar Cambios</button>
 
         </form>
 
-        <!-- NAVEGACION -->
-        <!-- Permite regresar al detalle del producto. -->
+        <!--
+            "NAVEGACION"
+        -->
         <div class="acciones">
-            <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}">
-                Volver al Detalle del Producto
-            </a>
+
+            <!--
+                "DETALLE_PRODUCTO"
+                Permite regresar al detalle del producto.
+                https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
+            -->
+            <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}">Volver al Detalle del Producto</a>
+
         </div>
 
     </main>

@@ -2,7 +2,8 @@ from django import forms
 from .models import Producto
 
 
-# PRODUCTOFORM
+#
+# "PRODUCTOFORM"
 # Formulario basado en el modelo 'Producto'.
 # https://docs.djangoproject.com/en/5.0/topics/forms/#building-a-form-in-django
 #
@@ -11,19 +12,22 @@ from .models import Producto
 #
 class ProductoForm(forms.ModelForm):
 
-    # META
+    #
+    # "META"
     # Clase interna que establece la configuracion del formulario.
     # https://docs.djangoproject.com/en/5.0/topics/forms/modelforms/#a-full-example
     #
     class Meta:
 
-        # MODEL
+        #
+        # "MODEL"
         # Indica el modelo asociado al formulario.
         # https://docs.djangoproject.com/en/5.0/topics/forms/modelforms/#a-full-example
         #
         model = Producto
 
-        # FIELDS
+        #
+        # "FIELDS"
         # Define los campos del modelo que estaran disponibles en el formulario.
         # https://docs.djangoproject.com/en/5.0/topics/forms/modelforms/#a-full-example
         #
@@ -34,3 +38,15 @@ class ProductoForm(forms.ModelForm):
             'precio',
             'stock',
         ]
+
+        #
+        # "LABELS"
+        # Personaliza los nombres visibles de los campos del formulario.
+        # Las claves corresponden a los nombres definidos en el modelo 'Producto'.
+        # Los valores son las etiquetas que 'Django' mostrara en las plantillas 'HTML'.
+        # https://docs.djangoproject.com/en/5.0/topics/forms/modelforms/#overriding-the-default-fields
+        #
+        labels = {
+            'descripcion': 'Descripción',
+            'categoria': 'Categoría',
+        }

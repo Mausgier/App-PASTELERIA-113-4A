@@ -6,35 +6,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Pasteleria - Inicio</title>
+    <title>Pastelería - Inicio</title>
+
+    <!--
+        "ESTILOS"
+        Define la apariencia de la pagina principal de la aplicacion.
+    -->
+    <style>
+
+        /*
+            "BODY"
+            Establece la fuente, el color de fondo y elimina los margenes predeterminados.
+        */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /*
+            "HEADER"
+            Centra el encabezado principal de la aplicacion.
+        */
+        header {
+            text-align: center;
+            padding: 30px 20px 10px;
+        }
+
+        /*
+            "HEADER H1"
+            Define la apariencia del titulo principal.
+        */
+        header h1 {
+            margin-bottom: 10px;
+        }
+
+        /*
+            "HEADER P"
+            Define el color del subtitulo.
+        */
+        header p {
+            color: #555555;
+        }
+
+        /*
+            "NAV"
+            Centra los enlaces de navegacion.
+        */
+        nav {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /*
+            "NAV A"
+            Presenta los enlaces de navegacion como botones.
+        */
+        nav a {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #333333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        /*
+            "NAV A:HOVER"
+            Cambia el color de los enlaces cuando el cursor se posiciona sobre ellos.
+        */
+        nav a:hover {
+            background-color: #555555;
+        }
+
+        /*
+            "MAIN"
+            Presenta el contenido principal dentro de un contenedor blanco y centrado.
+        */
+        main {
+            width: 80%;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        /*
+            "MAIN H2"
+            Ajusta el espacio inferior del titulo de bienvenida.
+        */
+        main h2 {
+            margin-bottom: 20px;
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-    <!-- ENCABEZADO -->
-    <!-- Identifica la tematica principal de la aplicacion. -->
+    <!--
+        "ENCABEZADO"
+        Identifica la tematica principal de la aplicacion.
+    -->
     <header>
-        <h1>Pasteleria</h1>
-        <p>Sistema de Gestion de Productos</p>
+        <h1>Pastelería</h1>
+        <p>Sistema de Gestión de Productos</p>
     </header>
 
-    <!-- NAVEGACION -->
-    <!-- Permite acceder a las diferentes paginas de la aplicacion. -->
+    <!--
+        "NAVEGACION"
+        Permite acceder a las diferentes paginas de la aplicacion.
+    -->
     <nav>
-        <!-- INICIO -->
-        <!-- Enlace a la pagina principal. -->
+        <!--
+            "INICIO"
+            Enlace a la pagina principal.
+            https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
+        -->
         <a href="{% url 'pasteleria_app:inicio' %}">Inicio</a>
 
-        <!-- LISTAR_PRODUCTOS -->
-        <!-- Enlace al listado de productos almacenados en 'MySQL' / 'MariaDB'. -->
+        <!--
+            "LISTAR_PRODUCTOS"
+            Enlace al listado de productos almacenados en 'MySQL' / 'MariaDB'.
+            https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
+        -->
         <a href="{% url 'pasteleria_app:listar_productos' %}">Ver Productos</a>
     </nav>
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!--
+        "CONTENIDO PRINCIPAL"
+    -->
     <main>
-        <h2>Bienvenido a nuestra Pasteleria</h2>
-        <p>Esta aplicacion permite gestionar los productos disponibles en nuestra pasteleria.</p>
+        <h2>Bienvenido a nuestra Pastelería</h2>
+        <p>Esta aplicación permite gestionar los productos disponibles en nuestra pastelería.</p>
     </main>
 
 </body>
