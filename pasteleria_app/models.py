@@ -2,12 +2,14 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 
+#
 # PRODUCTO
 # Modelo principal que se utilizara para poder gestionar los productos dentro de la aplicacion 'pasteleria_app'.
 # https://docs.djangoproject.com/en/5.0/topics/db/models/#module-django.db.models
 #
 class Producto(models.Model):
 
+    #
     # NOMBRE
     # Variable textual de caracter obligatorio.
     #
@@ -21,6 +23,7 @@ class Producto(models.Model):
         max_length=100
     )
 
+    #
     # DESCRIPCION
     # Variable textual de caracter opcional.
     #
@@ -34,6 +37,7 @@ class Producto(models.Model):
         blank=True
     )
 
+    #
     # CATEGORIA
     # Variable textual de caracter obligatorio.
     #
@@ -63,6 +67,7 @@ class Producto(models.Model):
         default='otro'
     )
 
+    #
     # PRECIO
     # Variable numerica de caracter obligatorio.
     #
@@ -90,6 +95,7 @@ class Producto(models.Model):
         validators=[MinValueValidator(1)]
     )
 
+    #
     # STOCK
     # Variable numerica de caracter obligatorio.
     #

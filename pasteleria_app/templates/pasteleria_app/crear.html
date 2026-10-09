@@ -78,11 +78,15 @@
         }
 
         /*
-            "FORM P"
-            Organiza cada campo del formulario de manera vertical.
-            Establece una separacion uniforme entre los campos.
+            "FORM .CAMPO-FORMULARIO"
+            Organiza individualmente cada campo del formulario.
+
+            'display: flex' permite ordenar los elementos internos.
+            'flex-direction: column' coloca la etiqueta, el campo y sus mensajes de error uno debajo del otro.
+            'gap' establece una separacion uniforme.
+            'margin-bottom' separa cada grupo de campos.
         */
-        form p {
+        form .campo-formulario {
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -97,6 +101,30 @@
         form label {
             display: block;
             font-weight: bold;
+        }
+
+        /*
+            "FORM .ERRORLIST"
+            Personaliza los mensajes de error generados por 'Django' cuando un campo del formulario contiene datos invalidos.
+            'list-style: none' elimina las viñetas de la lista.
+            'margin' establece una separacion respecto de los demas elementos.
+            'padding' añade espacio interior al mensaje.
+            'background-color' establece un fondo rojo claro.
+            'color' define el color rojo del texto.
+            'border-left' destaca el error mediante un borde rojo.
+            'border-radius' redondea los bordes del mensaje.
+            'font-size' define el tamaño de letra.
+        */
+        form .errorlist {
+            list-style: none;
+            margin: 8px 0 12px;
+            padding: 10px 12px;
+            background-color: #fff0f0;
+            color: #a32929;
+            border-left: 4px solid #a32929;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
         }
 
         /*
@@ -139,8 +167,7 @@
 
         /*
             ".ACCIONES A"
-            Presenta el enlace de regreso con la apariencia
-            de los botones utilizados en las demas paginas.
+            Presenta el enlace de regreso con la apariencia de los botones utilizados en las demas paginas.
         */
         .acciones a {
             display: inline-block;
@@ -178,8 +205,13 @@
         <!--
             "FORMULARIO"
             Envia los datos mediante el metodo 'POST'.
+
+            El atributo 'novalidate' desactiva la validacion automatica del navegador antes de enviar el formulario.
+            Esto permite que 'Django' valide los datos mediante 'ProductoForm' y muestre los mensajes de error dentro de la propia pagina.
+            'novalidate' no desactiva las validaciones del servidor.
+            https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/novalidate
         -->
-        <form method="POST">
+        <form method="POST" novalidate>
 
             <!--
                 "CSRF_TOKEN"
@@ -190,10 +222,54 @@
 
             <!--
                 "PRODUCTOFORM"
-                Muestra los campos del formulario definido en 'forms.py'.
-                https://docs.djangoproject.com/en/5.0/ref/forms/api/#django.forms.Form.as_p
+                Presenta individualmente los campos definidos en 'ProductoForm'.
+
+                'formulario.non_field_errors' muestra los errores generales que no corresponden a un campo especifico.
+                https://docs.djangoproject.com/en/5.0/topics/forms/#rendering-form-error-messages
+
+                El ciclo 'for' recorre cada campo del formulario.
+                https://docs.djangoproject.com/en/5.0/topics/forms/#looping-over-the-form-s-fields
             -->
-            {{ formulario.as_p }}
+            {{ formulario.non_field_errors }}
+
+            {% for campo in formulario %}
+
+                <!--
+                    "CAMPO-FORMULARIO"
+                    Agrupa la etiqueta, el campo y sus mensajes de error.
+                -->
+                <div class="campo-formulario">
+
+                    <!--
+                        "LABEL_TAG"
+                        Genera la etiqueta asociada al campo.
+                    -->
+                    {{ campo.label_tag }}
+
+                    <!--
+                        "CAMPO"
+                        Genera el elemento HTML correspondiente.
+                    -->
+                    {{ campo }}
+
+                    <!--
+                        "ERRORS"
+                        Muestra los errores de validacion debajo del campo.
+                        https://docs.djangoproject.com/en/5.0/ref/forms/api/#django.forms.BoundField.errors
+                    -->
+                    {{ campo.errors }}
+
+                    <!--
+                        "HELP_TEXT"
+                        Muestra un texto de ayuda cuando el campo lo proporciona.
+                    -->
+                    {% if campo.help_text %}
+                        <small>{{ campo.help_text }}</small>
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
 
             <!--
                 "GUARDAR"
