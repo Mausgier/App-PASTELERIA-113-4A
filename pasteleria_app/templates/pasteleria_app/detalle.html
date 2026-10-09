@@ -48,6 +48,13 @@
             border-radius: 5px;
             margin-top: 20px;
         }
+
+        /* BOTON_ELIMINAR */
+        /* Diferencia visualmente la accion de eliminacion mediante un color rojo. */
+        .boton-eliminar {
+            background-color: #a32929;
+        }
+
     </style>
 
 </head>
@@ -102,6 +109,12 @@
         <!-- Permite acceder al formulario de edicion del producto actual. -->
         <a href="{% url 'pasteleria_app:editar_producto' producto.id %}" class="boton">
             Editar Producto
+        </a>
+
+        <!-- ELIMINAR_PRODUCTO -->
+        <!-- Permite acceder a la pagina de confirmacion de eliminacion del producto actual. -->
+        <a href="{% url 'pasteleria_app:eliminar_producto' producto.id %}" class="boton boton-eliminar">
+            Eliminar Producto
         </a>
 
         <!-- LISTAR_PRODUCTOS -->

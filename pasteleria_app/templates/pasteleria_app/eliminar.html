@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pasteleria - Eliminar Producto</title>
+
+    <!-- ESTILOS -->
+    <!-- Define la apariencia de la pagina de confirmacion de eliminacion. -->
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .contenedor {
+            width: 80%;
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .advertencia {
+            color: #a32929;
+            font-weight: bold;
+        }
+
+        .producto {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #a32929;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .acciones {
+            margin-top: 20px;
+        }
+
+        .cancelar {
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="contenedor">
+
+        <h1>Eliminar Producto</h1>
+
+        <!-- ADVERTENCIA -->
+        <!-- Informa al usuario que esta por eliminar un producto. -->
+        <p class="advertencia">
+            ¿Estas seguro de que deseas eliminar este producto?
+        </p>
+
+        <!-- PRODUCTO -->
+        <!-- Muestra la informacion del producto recibido desde views.py. -->
+        <section class="producto">
+
+            <p>
+                <strong>ID:</strong>
+                {{ producto.id }}
+            </p>
+
+            <p>
+                <strong>Nombre:</strong>
+                {{ producto.nombre }}
+            </p>
+
+            <p>
+                <strong>Precio:</strong>
+                ${{ producto.precio }}
+            </p>
+
+            <p>
+                <strong>Stock:</strong>
+                {{ producto.stock }}
+            </p>
+
+        </section>
+
+        <!-- FORMULARIO -->
+        <!-- Envia una solicitud POST para confirmar la eliminacion. -->
+        <form method="POST" action="{% url 'pasteleria_app:eliminar_producto' producto.id %}">
+
+            <!-- CSRF_TOKEN -->
+            <!-- Protege el formulario contra solicitudes CSRF. -->
+            <!-- https://docs.djangoproject.com/en/5.0/howto/csrf/ -->
+            {% csrf_token %}
+
+            <!-- CONFIRMAR_ELIMINACION -->
+            <!-- Envia el formulario para ejecutar la eliminacion. -->
+            <button type="submit">
+                Confirmar Eliminacion
+            </button>
+
+        </form>
+
+        <!-- NAVEGACION -->
+        <!-- Permite cancelar la operacion sin eliminar el producto. -->
+        <div class="acciones">
+
+            <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}" class="cancelar">
+                Cancelar y Volver al Detalle
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
