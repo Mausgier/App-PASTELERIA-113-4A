@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pastelería - Crear Producto</title>
+
+    <!--
+        "ESTILOS"
+        Define la apariencia de la pagina responsable de permitir la creacion de productos.
+    -->
+    <style>
+
+        /*
+            "BODY"
+            Establece la fuente, el color de fondo y elimina los margenes predeterminados.
+        */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /*
+            ".CONTENEDOR"
+            Presenta el formulario dentro de un contenedor blanco y centrado.
+            Define su ancho, espacios internos y bordes redondeados.
+            'max-width' limita su tamaño maximo.
+            'box-sizing: border-box' permite incluir los espacios internos y los bordes dentro del ancho definido para el contenedor.
+        */
+        .contenedor {
+            width: 80%;
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            box-sizing: border-box;
+            border-radius: 8px;
+        }
+
+        /*
+            "H1"
+            Centra el titulo principal de la pagina.
+        */
+        h1 {
+            text-align: center;
+        }
+
+        /*
+            "BUTTON"
+            Define la apariencia del boton encargado de enviar el formulario.
+            Establece sus dimensiones, colores y bordes redondeados.
+            'font-family: inherit' utiliza la fuente definida en el elemento padre.
+            'font-size' establece un tamaño de letra uniforme con los enlaces de navegacion.
+            'cursor: pointer' indica visualmente que el boton puede presionarse.
+        */
+        button {
+            font-family: inherit;
+            font-size: 16px;
+            padding: 10px 15px;
+            background-color: #333333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /*
+            ".ACCIONES"
+            Establece un espacio superior para separar la navegacion del formulario de creacion.
+        */
+        .acciones {
+            margin-top: 20px;
+        }
+
+        /*
+            "FORM .CAMPO-FORMULARIO"
+            Organiza individualmente cada campo del formulario.
+
+            'display: flex' permite ordenar los elementos internos.
+            'flex-direction: column' coloca la etiqueta, el campo y sus mensajes de error uno debajo del otro.
+            'gap' establece una separacion uniforme.
+            'margin-bottom' separa cada grupo de campos.
+        */
+        form .campo-formulario {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        /*
+            "FORM LABEL"
+            Presenta las etiquetas encima de sus respectivos campos.
+            Destaca visualmente el nombre de cada campo.
+        */
+        form label {
+            display: block;
+            font-weight: bold;
+        }
+
+        /*
+            "FORM .ERRORLIST"
+            Personaliza los mensajes de error generados por 'Django' cuando un campo del formulario contiene datos invalidos.
+            'list-style: none' elimina las viñetas de la lista.
+            'margin' establece una separacion respecto de los demas elementos.
+            'padding' añade espacio interior al mensaje.
+            'background-color' establece un fondo rojo claro.
+            'color' define el color rojo del texto.
+            'border-left' destaca el error mediante un borde rojo.
+            'border-radius' redondea los bordes del mensaje.
+            'font-size' define el tamaño de letra.
+        */
+        form .errorlist {
+            list-style: none;
+            margin: 8px 0 12px;
+            padding: 10px 12px;
+            background-color: #fff0f0;
+            color: #a32929;
+            border-left: 4px solid #a32929;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        /*
+            "FORM INPUT, FORM SELECT, FORM TEXTAREA"
+            Establece un ancho uniforme para los campos del formulario.
+            Define espacios internos y bordes para mejorar su apariencia.
+        */
+        form input:not([type="hidden"]),
+        form select,
+        form textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #222222;
+            color-scheme: light;
+        }
+
+        /*
+            "FORM TEXTAREA"
+            Define una altura inicial para el campo de descripcion.
+            Permite modificar verticalmente su tamaño.
+        */
+        form textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        /*
+            "BUTTON:HOVER"
+            Cambia el color del boton cuando el cursor se posiciona sobre el.
+        */
+        button:hover {
+            background-color: #555555;
+        }
+
+        /*
+            ".ACCIONES A"
+            Presenta el enlace de regreso con la apariencia de los botones utilizados en las demas paginas.
+        */
+        .acciones a {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #333333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        /*
+            ".ACCIONES A:HOVER"
+            Cambia el color del enlace cuando el cursor se posiciona sobre el.
+        */
+        .acciones a:hover {
+            background-color: #555555;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!--
+        "CONTENEDOR PRINCIPAL"
+    -->
+    <main class="contenedor">
+
+        <!--
+            "TITULO"
+        -->
+        <h1>Crear Nuevo Producto</h1>
+
+        <!--
+            "FORMULARIO"
+            Envia los datos mediante el metodo 'POST'.
+
+            El atributo 'novalidate' desactiva la validacion automatica del navegador antes de enviar el formulario.
+            Esto permite que 'Django' valide los datos mediante 'ProductoForm' y muestre los mensajes de error dentro de la propia pagina.
+            'novalidate' no desactiva las validaciones del servidor.
+            https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/novalidate
+        -->
+        <form method="POST" novalidate>
+
+            <!--
+                "CSRF_TOKEN"
+                Protege el formulario contra solicitudes 'CSRF'.
+                https://docs.djangoproject.com/en/5.0/howto/csrf/#how-to-use-django-s-csrf-protection
+            -->
+            {% csrf_token %}
+
+            <!--
+                "PRODUCTOFORM"
+                Presenta individualmente los campos definidos en 'ProductoForm'.
+
+                'formulario.non_field_errors' muestra los errores generales que no corresponden a un campo especifico.
+                https://docs.djangoproject.com/en/5.0/topics/forms/#rendering-form-error-messages
+
+                El ciclo 'for' recorre cada campo del formulario.
+                https://docs.djangoproject.com/en/5.0/topics/forms/#looping-over-the-form-s-fields
+            -->
+            {{ formulario.non_field_errors }}
+
+            {% for campo in formulario %}
+
+                <!--
+                    "CAMPO-FORMULARIO"
+                    Agrupa la etiqueta, el campo y sus mensajes de error.
+                -->
+                <div class="campo-formulario">
+
+                    <!--
+                        "LABEL_TAG"
+                        Genera la etiqueta asociada al campo.
+                    -->
+                    {{ campo.label_tag }}
+
+                    <!--
+                        "CAMPO"
+                        Genera el elemento HTML correspondiente.
+                    -->
+                    {{ campo }}
+
+                    <!--
+                        "ERRORS"
+                        Muestra los errores de validacion debajo del campo.
+                        https://docs.djangoproject.com/en/5.0/ref/forms/api/#django.forms.BoundField.errors
+                    -->
+                    {{ campo.errors }}
+
+                    <!--
+                        "HELP_TEXT"
+                        Muestra un texto de ayuda cuando el campo lo proporciona.
+                    -->
+                    {% if campo.help_text %}
+                        <small>{{ campo.help_text }}</small>
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+            <!--
+                "GUARDAR"
+                Envia los datos del producto para su validacion y guardado.
+            -->
+            <button type="submit">Guardar Producto</button>
+
+        </form>
+
+        <!--
+            "NAVEGACION"
+        -->
+        <div class="acciones">
+
+            <!--
+                "LISTAR_PRODUCTOS"
+                Permite regresar al listado de productos.
+                https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
+            -->
+            <a href="{% url 'pasteleria_app:listar_productos' %}">Volver al Listado de Productos</a>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
