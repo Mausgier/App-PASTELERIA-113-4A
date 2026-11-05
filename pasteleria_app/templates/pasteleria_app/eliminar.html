@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 
@@ -157,41 +158,10 @@
         -->
         <section class="producto">
 
-            <!--
-                "ID"
-                Muestra el identificador del producto.
-            -->
-            <p>
-                <strong>ID:</strong>
-                {{ producto.id }}
-            </p>
-
-            <!--
-                "NOMBRE"
-                Muestra el nombre del producto.
-            -->
-            <p>
-                <strong>Nombre:</strong>
-                {{ producto.nombre }}
-            </p>
-
-            <!--
-                "PRECIO"
-                Muestra el precio del producto.
-            -->
-            <p>
-                <strong>Precio:</strong>
-                ${{ producto.precio }}
-            </p>
-
-            <!--
-                "STOCK"
-                Muestra el stock disponible del producto.
-            -->
-            <p>
-                <strong>Stock:</strong>
-                {{ producto.stock }}
-            </p>
+            <p><strong>ID:</strong> <span id="dato-id"></span></p>
+            <p><strong>Nombre:</strong> <span id="dato-nombre"></span></p>
+            <p><strong>Precio:</strong> <span id="dato-precio"></span></p>
+            <p><strong>Stock:</strong> <span id="dato-stock"></span></p>
 
         </section>
 
@@ -200,7 +170,7 @@
             Envia una solicitud POST para confirmar la eliminacion.
             https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
         -->
-        <form method="POST" action="{% url 'pasteleria_app:eliminar_producto' producto.id %}">
+        <form id="formEliminar">
 
             <!--
                 "CSRF_TOKEN"
@@ -215,6 +185,8 @@
             -->
             <button type="submit">Confirmar Eliminación</button>
 
+            <p id="mensaje" role="status"></p>
+
         </form>
 
         <!--
@@ -227,11 +199,67 @@
                 Permite regresar a los detalles del producto.
                 https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
             -->
-            <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}" class="cancelar">Cancelar y Volver al Detalle</a>
+            <a href="{% url 'pasteleria_app:detalle_producto' id %}" class="cancelar">Cancelar y Volver al Detalle</a>
 
         </div>
 
     </main>
+
+    <script src="{% static 'pasteleria_app/api.js' %}"></script>
+
+    <script>
+        const idProducto = {{ id }};
+        const formulario = document.getElementById('formEliminar');
+        const mensaje = document.getElementById('mensaje');
+        const boton = formulario.querySelector('button[type="submit"]');
+
+        boton.disabled = true;
+
+        async function cargarProducto() {
+
+            try {
+                const producto = await apiProductos(
+                    'GET',
+                    '/api/productos/' + idProducto + '/'
+                );
+
+                document.getElementById('dato-id').textContent = producto.id;
+                document.getElementById('dato-nombre').textContent = producto.nombre;
+                document.getElementById('dato-precio').textContent =
+                    '$' + producto.precio;
+                document.getElementById('dato-stock').textContent = producto.stock;
+
+                boton.disabled = false;
+
+            } catch (error) {
+                mensaje.textContent = error.message;
+            }
+        }
+
+        formulario.addEventListener('submit', async function(event) {
+
+            event.preventDefault();
+            mensaje.textContent = '';
+
+            boton.disabled = true;
+
+            try {
+                await apiProductos(
+                    'DELETE',
+                    '/api/productos/' + idProducto + '/'
+                );
+
+                window.location.href = '/productos/';
+
+            } catch (error) {
+                mensaje.textContent = error.message;
+                mensaje.style.color = '#a32929';
+                boton.disabled = false;
+            }
+        });
+
+        cargarProducto();
+    </script>
 
 </body>
 

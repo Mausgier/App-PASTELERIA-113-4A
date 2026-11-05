@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 
@@ -132,92 +133,84 @@
 
         </div>
 
-        <!--
-            "LISTADO DE PRODUCTOS"
-            Recorre los productos enviados desde 'views.py'.
-            https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#for
-        -->
-        {% for producto in productos %}
+        <section id="lista-productos">
+            <p>Cargando productos...</p>
+        </section>
 
-            <!--
-                "PRODUCTOS"
-            -->
-            <article class="producto">
-
-                <!--
-                    "NOMBRE"
-                    Muestra el nombre del producto.
-                -->
-                <h2>{{ producto.nombre }}</h2>
-
-                <!--
-                    "DESCRIPCION"
-                    Muestra la descripcion que acompaña al producto.
-
-                    Si el producto no posee una descripcion, se mostrara el texto alternativo proporcionado por el filtro 'default'.
-                    https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#default
-                -->
-                <p>
-                    <strong>Descripción:</strong>
-                    {{ producto.descripcion|default:"Sin descripción." }}
-                </p>
-
-                <!--
-                    "CATEGORIA"
-                    Muestra la categoria asignada al producto.
-
-                    Se asegura de mostrar el nombre legible de cada categoria.
-                    https://docs.djangoproject.com/en/5.0/ref/models/instances/#django.db.models.Model.get_FOO_display
-                -->
-                <p>
-                    <strong>Categoría:</strong>
-                    {{ producto.get_categoria_display }}
-                </p>
-
-                <!--
-                    "PRECIO"
-                    Muestra el precio del producto.
-                -->
-                <p>
-                    <strong>Precio:</strong>
-                    ${{ producto.precio }}
-                </p>
-
-                <!--
-                    "STOCK"
-                    Muestra el stock disponible del producto.
-                -->
-                <p>
-                    <strong>Stock:</strong>
-                    {{ producto.stock }}
-                </p>
-
-                <!--
-                    "DETALLE_PRODUCTO"
-                    Permite consultar individualmente la informacion del producto.
-                    https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
-                -->
-                <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}" class="boton">Ver Detalle</a>
-
-            </article>
-
-            <!--
-                "EMPTY"
-                En el caso de que no existan productos, mostrar el siguiente bloque de texto.
-                https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#for-empty
-            -->
-            {% empty %}
-
-            <!--
-                "MENSAJE SIN REGISTROS"
-            -->
-            <div class="producto">
-                <p>No existen productos registrados.</p>
-            </div>
-
-        {% endfor %}
+        <p id="mensaje" role="status"></p>
 
     </main>
+
+    <script src="{% static 'pasteleria_app/api.js' %}"></script>
+
+    <script>
+        async function cargarProductos() {
+
+            const contenedor = document.getElementById('lista-productos');
+            const mensaje = document.getElementById('mensaje');
+
+            try {
+                const productos = await apiProductos(
+                    'GET',
+                    '/api/productos/'
+                );
+
+                contenedor.replaceChildren();
+
+                if (productos.length === 0) {
+                    const aviso = document.createElement('p');
+                    aviso.textContent = 'No existen productos registrados.';
+                    contenedor.appendChild(aviso);
+                    return;
+                }
+
+                for (const producto of productos) {
+
+                    const tarjeta = document.createElement('article');
+                    tarjeta.className = 'producto';
+
+                    const titulo = document.createElement('h2');
+                    titulo.textContent = producto.nombre;
+                    tarjeta.appendChild(titulo);
+
+                    const campos = [
+                        ['Descripción', producto.descripcion || 'Sin descripción.'],
+                        ['Categoría', nombreCategoria(producto.categoria)],
+                        ['Precio', '$' + producto.precio],
+                        ['Stock', producto.stock]
+                    ];
+
+                    for (const [etiqueta, valor] of campos) {
+                        const parrafo = document.createElement('p');
+                        const negrita = document.createElement('strong');
+
+                        negrita.textContent = etiqueta + ': ';
+                        parrafo.appendChild(negrita);
+                        parrafo.appendChild(
+                            document.createTextNode(String(valor))
+                        );
+
+                        tarjeta.appendChild(parrafo);
+                    }
+
+                    const enlace = document.createElement('a');
+                    enlace.className = 'boton';
+                    enlace.textContent = 'Ver Detalle';
+                    enlace.href = '/productos/' + producto.id + '/';
+
+                    tarjeta.appendChild(enlace);
+                    contenedor.appendChild(tarjeta);
+                }
+
+            } catch (error) {
+                contenedor.replaceChildren();
+                mensaje.textContent = error.message;
+                mensaje.style.color = '#a32929';
+            }
+        }
+
+        cargarProductos();
+    </script>
 
 </body>
 

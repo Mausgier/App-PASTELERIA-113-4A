@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 
@@ -128,68 +129,15 @@
             Muestra los datos del producto recibidos desde 'views.py'.
         -->
         <section class="informacion">
-
-            <!--
-                "ID"
-                Muestra el identificador del producto.
-            -->
-            <p>
-                <strong>ID:</strong>
-                {{ producto.id }}
-            </p>
-
-            <!--
-                "NOMBRE"
-                Muestra el nombre del producto.
-            -->
-            <p>
-                <strong>Nombre:</strong>
-                {{ producto.nombre }}
-            </p>
-
-            <!--
-                "DESCRIPCION"
-                Muestra la descripcion que acompaña al producto.
-
-                Si el producto no posee una descripcion, se mostrara el texto alternativo proporcionado por el filtro 'default'.
-                https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#default
-            -->
-            <p>
-                <strong>Descripción:</strong>
-                {{ producto.descripcion|default:"Sin descripción." }}
-            </p>
-
-            <!--
-                "CATEGORIA"
-                Muestra la categoria asignada al producto.
-
-                Se asegura de mostrar el nombre legible de cada categoria.
-                https://docs.djangoproject.com/en/5.0/ref/models/instances/#django.db.models.Model.get_FOO_display
-            -->
-            <p>
-                <strong>Categoría:</strong>
-                {{ producto.get_categoria_display }}
-            </p>
-
-            <!--
-                "PRECIO"
-                Muestra el precio del producto.
-            -->
-            <p>
-                <strong>Precio:</strong>
-                ${{ producto.precio }}
-            </p>
-
-            <!--
-                "STOCK"
-                Muestra el stock disponible del producto.
-            -->
-            <p>
-                <strong>Stock:</strong>
-                {{ producto.stock }}
-            </p>
-
+            <p><strong>ID:</strong> <span id="dato-id"></span></p>
+            <p><strong>Nombre:</strong> <span id="dato-nombre"></span></p>
+            <p><strong>Descripción:</strong> <span id="dato-descripcion"></span></p>
+            <p><strong>Categoría:</strong> <span id="dato-categoria"></span></p>
+            <p><strong>Precio:</strong> <span id="dato-precio"></span></p>
+            <p><strong>Stock:</strong> <span id="dato-stock"></span></p>
         </section>
+
+        <p id="mensaje" role="status"></p>
 
         <!--
             "NAVEGACION"
@@ -201,14 +149,14 @@
             Permite acceder al formulario de edicion del producto actual.
             https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
         -->
-        <a href="{% url 'pasteleria_app:editar_producto' producto.id %}" class="boton">Editar Producto</a>
+        <a href="{% url 'pasteleria_app:editar_producto' id %}" class="boton">Editar Producto</a>
 
         <!--
             "ELIMINAR_PRODUCTO"
             Permite acceder a la pagina de confirmacion de eliminacion del producto actual.
             https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
         -->
-        <a href="{% url 'pasteleria_app:eliminar_producto' producto.id %}" class="boton boton-eliminar">Eliminar Producto</a>
+        <a href="{% url 'pasteleria_app:eliminar_producto' id %}" class="boton boton-eliminar">Eliminar Producto</a>
 
         <!--
             "LISTAR_PRODUCTOS"
@@ -218,6 +166,37 @@
         <a href="{% url 'pasteleria_app:listar_productos' %}" class="boton">Volver al Listado de Productos</a>
 
     </main>
+
+    <script src="{% static 'pasteleria_app/api.js' %}"></script>
+
+    <script>
+        const idProducto = {{ id }};
+
+        async function cargarDetalle() {
+
+            try {
+                const producto = await apiProductos(
+                    'GET',
+                    '/api/productos/' + idProducto + '/'
+                );
+
+                document.getElementById('dato-id').textContent = producto.id;
+                document.getElementById('dato-nombre').textContent = producto.nombre;
+                document.getElementById('dato-descripcion').textContent =
+                    producto.descripcion || 'Sin descripción.';
+                document.getElementById('dato-categoria').textContent =
+                    nombreCategoria(producto.categoria);
+                document.getElementById('dato-precio').textContent =
+                    '$' + producto.precio;
+                document.getElementById('dato-stock').textContent = producto.stock;
+
+            } catch (error) {
+                document.getElementById('mensaje').textContent = error.message;
+            }
+        }
+
+        cargarDetalle();
+    </script>
 
 </body>
 
