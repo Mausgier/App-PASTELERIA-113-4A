@@ -60,24 +60,29 @@
         }
 
         /*
-            "NAV A"
+            "NAV A, NAV BUTTON"
             Presenta los enlaces de navegacion como botones.
         */
-        nav a {
+        nav a,
+        nav button {
             display: inline-block;
             padding: 10px 15px;
             margin: 5px;
             background-color: #333333;
             color: white;
             text-decoration: none;
+            border: none;
             border-radius: 5px;
+            font: inherit;
+            cursor: pointer;
         }
 
         /*
-            "NAV A:HOVER"
+            "NAV A:HOVER, NAV BUTTON:HOVER"
             Cambia el color de los enlaces cuando el cursor se posiciona sobre ellos.
         */
-        nav a:hover {
+        nav a:hover,
+        nav button:hover {
             background-color: #555555;
         }
 
@@ -137,6 +142,29 @@
             https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
         -->
         <a href="{% url 'pasteleria_app:listar_productos' %}">Ver Productos</a>
+
+        {% if user.is_authenticated %}
+
+        <span>Usuario: {{ user.username }}</span>
+
+        <form
+            id="formLogout"
+            method="post"
+            action="{% url 'pasteleria_app:logout_pagina' %}"
+            style="display: inline;"
+            onsubmit="sessionStorage.removeItem('token')"
+        >
+            {% csrf_token %}
+            <button type="submit">Cerrar Sesión</button>
+        </form>
+
+        {% else %}
+
+            <a href="{% url 'pasteleria_app:login_pagina' %}">
+                Iniciar Sesión
+            </a>
+
+        {% endif %}
     </nav>
 
     <!--

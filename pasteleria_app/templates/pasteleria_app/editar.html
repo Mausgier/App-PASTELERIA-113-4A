@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 
@@ -206,7 +207,7 @@
             "PRODUCTO"
             Identifica el producto que se desea modificar.
         -->
-        <h2>{{ producto.nombre }}</h2>
+        <h2 id="tituloProducto">Cargando producto...</h2>
 
         <!--
             "FORMULARIO"
@@ -217,7 +218,7 @@
             'novalidate' no desactiva las validaciones del servidor.
             https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/novalidate
         -->
-        <form method="POST" novalidate>
+        <form id="formProducto" novalidate>
 
             <!--
                 "CSRF_TOKEN"
@@ -283,6 +284,8 @@
             -->
             <button type="submit">Guardar Cambios</button>
 
+            <p id="mensaje" role="status"></p>
+
         </form>
 
         <!--
@@ -295,11 +298,71 @@
                 Permite regresar al detalle del producto.
                 https://docs.djangoproject.com/en/5.0/ref/templates/builtins/#url
             -->
-            <a href="{% url 'pasteleria_app:detalle_producto' producto.id %}">Volver al Detalle del Producto</a>
+           <a href="{% url 'pasteleria_app:detalle_producto' id %}">Volver al Detalle del Producto</a>
 
         </div>
 
     </main>
+
+    <script src="{% static 'pasteleria_app/api.js' %}"></script>
+
+    <script>
+        const idProducto = {{ id }};
+        const formulario = document.getElementById('formProducto');
+        const mensaje = document.getElementById('mensaje');
+        const boton = formulario.querySelector('button[type="submit"]');
+
+        boton.disabled = true;
+
+        async function cargarProducto() {
+
+            try {
+                const producto = await apiProductos(
+                    'GET',
+                    '/api/productos/' + idProducto + '/'
+                );
+
+                for (const campo of [
+                    'nombre', 'descripcion', 'categoria', 'precio', 'stock'
+                ]) {
+                    formulario.elements.namedItem(campo).value =
+                        producto[campo] ?? '';
+                }
+
+                document.getElementById('tituloProducto').textContent =
+                    producto.nombre;
+
+                boton.disabled = false;
+
+            } catch (error) {
+                mensaje.textContent = error.message;
+            }
+        }
+
+        formulario.addEventListener('submit', async function(event) {
+
+            event.preventDefault();
+            mensaje.textContent = '';
+
+            try {
+                const producto = leerProducto(formulario);
+
+                await apiProductos(
+                    'PUT',
+                    '/api/productos/' + idProducto + '/',
+                    producto
+                );
+
+                window.location.href = '/productos/' + idProducto + '/';
+
+            } catch (error) {
+                mensaje.textContent = error.message;
+                mensaje.style.color = '#a32929';
+            }
+        });
+
+        cargarProducto();
+    </script>
 
 </body>
 
