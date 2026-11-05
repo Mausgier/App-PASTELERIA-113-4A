@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import api_views
 
 
 #
@@ -77,4 +78,12 @@ urlpatterns = [
     # API REST para verificar el token.
     #
     path('api/perfil/', views.PerfilAPIView.as_view(), name='api_perfil'),
+    #
+    # API REST para listar y crear productos.
+    #
+    path('api/productos/', api_views.ProductosAPIView.as_view(), name='api_productos'),
+    #
+    # API REST para consultar, actualizar y eliminar por ID.
+    #
+    path('api/productos/<int:id>/', api_views.ProductoDetalleAPIView.as_view(), name='api_producto_detalle'),
 ]
