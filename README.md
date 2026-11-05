@@ -4,9 +4,6 @@
 
 Aplicación web desarrollada con Django 5.0 y MySQL/MariaDB para gestionar los productos de una pastelería.
 
-El proyecto implementa las operaciones CRUD (Create, Read, Update y Delete), permitiendo crear, consultar, modificar y eliminar productos desde una interfaz web.
-
-Este desarrollo corresponde a la Evaluación Sumativa N.º 2 de Programación Back-End.
 
 ## Tecnologías utilizadas
 
