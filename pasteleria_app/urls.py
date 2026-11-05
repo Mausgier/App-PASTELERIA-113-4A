@@ -61,4 +61,20 @@ urlpatterns = [
     # https://docs.djangoproject.com/en/5.0/topics/http/urls/#path-converters
     #
     path('productos/<int:id>/eliminar/', views.eliminar_producto, name='eliminar_producto'),
+    #
+    # Página de inicio de sesión.
+    #
+    path('login/', views.login_pagina, name='login_pagina'),
+    #
+    # Cierre de sesión.
+    #
+    path('logout/', views.logout_pagina, name='logout_pagina'),
+    #
+    # API REST para iniciar sesión.
+    #
+    path('api/login/', views.LoginAPIView.as_view(), name='login_api'),
+    #
+    # API REST para verificar el token.
+    #
+    path('api/perfil/', views.PerfilAPIView.as_view(), name='api_perfil'),
 ]

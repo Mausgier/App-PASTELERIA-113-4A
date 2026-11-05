@@ -2,6 +2,23 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto
 from .forms import ProductoForm
 
+from django.contrib.auth import (
+    authenticate,
+    login as iniciar_sesion,
+    logout as cerrar_sesion,
+)
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.parsers import JSONParser
+from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 #
 # INICIO
@@ -24,6 +41,7 @@ def inicio(request):
 # LISTAR_PRODUCTOS
 # Vista encargada de mostrar la pagina responsable de permitir el poder consultar y mostrar los productos almacenados dentro de la base de datos.
 #
+@login_required
 def listar_productos(request):
 
     #
@@ -49,6 +67,7 @@ def listar_productos(request):
 # CREAR_PRODUCTO
 # Vista encargada de mostrar la pagina responsable de permitir recibir, validar y guardar nuevos productos dentro de la base de datos.
 #
+@login_required
 def crear_producto(request):
 
     #
@@ -106,6 +125,7 @@ def crear_producto(request):
 # DETALLE_PRODUCTO
 # Vista encargada de mostrar la pagina responsable de permitir el poder consultar y mostrar la informacion de un producto especifico mediante su identificador 'id'.
 #
+@login_required
 def detalle_producto(request, id):
 
     #
@@ -142,6 +162,7 @@ def detalle_producto(request, id):
 # EDITAR_PRODUCTO
 # Vista encargada de mostrar la pagina responsable de permitir consultar, validar y actualizar la informacion de un producto existente.
 #
+@login_required
 def editar_producto(request, id):
 
     #
@@ -218,6 +239,7 @@ def editar_producto(request, id):
 # ELIMINAR_PRODUCTO
 # Vista encargada de mostrar la pagina responsable de permitir consultar y eliminar un producto existente, previamente con confirmacion del usuario.
 #
+@login_required
 def eliminar_producto(request, id):
 
     #
@@ -265,3 +287,99 @@ def eliminar_producto(request, id):
     # 'context' corresponde a un diccionario de valores que añade contexto a la plantilla. En este caso, el unico valor es 'producto'.
     #
     return render(request,'pasteleria_app/eliminar.html',{'producto': producto})
+
+
+# Página HTML de inicio de sesión.
+def login_pagina(request):
+
+    if request.user.is_authenticated:
+        return redirect('pasteleria_app:listar_productos')
+
+    return render(request, 'pasteleria_app/login.html')
+
+
+# API REST para autenticar usuarios.
+@method_decorator(csrf_protect, name='dispatch')
+class LoginAPIView(APIView):
+
+    authentication_classes = []
+    permission_classes = [AllowAny]
+    parser_classes = [JSONParser]
+
+    def post(self, request):
+
+        # Comprobar que se reciba un objeto 'JSON'.
+        if not isinstance(request.data, dict):
+            return Response({
+                'error': 'Debes enviar un objeto JSON.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Recibir credenciales.
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        # Validar campos obligatorios y tipos.
+        if (
+            not isinstance(username, str)
+            or not isinstance(password, str)
+            or not username.strip()
+            or not password
+        ):
+            return Response({
+                'error': 'Debes ingresar usuario y contraseña.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Comprobar credenciales mediante 'Django'.
+        usuario = authenticate(
+            request=request._request,
+            username=username.strip(),
+            password=password
+        )
+
+        if usuario is None:
+            return Response({
+                'error': 'Usuario o contraseña incorrectos.'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Obtener o crear el token del usuario.
+        token, creado = Token.objects.get_or_create(
+            user=usuario
+        )
+
+        # Iniciar también la sesión tradicional de 'Django'.
+        iniciar_sesion(request._request, usuario)
+
+        return Response({
+            'mensaje': 'Autenticación correcta.',
+            'usuario': usuario.username,
+            'token': token.key
+        }, status=status.HTTP_200_OK)
+
+
+# Cierre de sesión.
+@login_required
+@require_POST
+def logout_pagina(request):
+
+    # Invalidar el token del usuario.
+    Token.objects.filter(user=request.user).delete()
+
+    # Cerrar la sesión de 'Django'.
+    cerrar_sesion(request)
+
+    return redirect('pasteleria_app:login_pagina')
+
+
+# Endpoint protegido para comprobar autenticación.
+class PerfilAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        return Response({
+            'mensaje': 'Token válido.',
+            'usuario': request.user.username
+        }, status=status.HTTP_200_OK)
+
